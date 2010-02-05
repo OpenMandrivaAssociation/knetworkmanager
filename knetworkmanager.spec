@@ -2,16 +2,24 @@
 
 %define snapshot r1084746
 %define srcname networkmanagement
-%define major 4
-%define libname %mklibname knm %{major}
-%define develname %mklibname -d knm
+
+%define client_major 4
+%define internals_major 4
+%define service_major 4
+%define ui_major 4
+%define client_libname %mklibname knmclient %{client_major}
+%define internals_libname %mklibname knminternals %{internals_major}
+%define service_libname %mklibname knmservice %{service_major}
+%define ui_libname %mklibname knmui %{ui_major}
+%define develname %mklibname -d knetworkmanager
 %define novellvpn 0
+
 
 Name:           knetworkmanager
 Summary:        KDE NetworkManager
 Version:        4.4
 Release:        %mkrel 0.%{snapshot}.1
-Group:          System/Configuration/Networking
+Group:          Graphical desktop/KDE 
 License:        GPLv2+
 URL:            http://www.kde.org
 #svn co svn://anonsvn.kde.org/home/kde/trunk/kdereview/networkmanagement/
@@ -19,36 +27,68 @@ Source0:        %{srcname}-%{snapshot}.tar.xz
 BuildRequires:  libnm-util-devel
 BuildRequires:  kdebase4-workspace-devel
 Requires:       networkmanager
+# TODO: probably a requires on solid networkmanager back-end is required too
 BuildRoot:      %{_tmppath}/%{name}-%{version}-%{release}-buildroot
 
 %description
-TODO
+KNetworkManager is a system tray applet for controlling network
+connections on systems that use the NetworkManager daemon.
 
 %package -n plasma-applet-networkmanagement
 Summary:	NetworkManager plasma applet
-Group:		System/Configuration/Networking	
+Group:		Graphical desktop/KDE
 Requires:	networkmanager
 
 %description -n plasma-applet-networkmanagement
 %{summary}
 
-%package -n  %{libname}
-Summary: Shared libraries used by %{name}
+# TODO: fix summaries and descriptions
+%package -n  %{client_libname}
+Summary:	Shared libraries used by %{name}
+Group:		System/Libraries 
 
-%description -n %{libname}
+%description -n %{client_libname}
 Shared libraries used by %{name}
 
+%package -n  %{internals_libname}
+Summary:        Shared libraries used by %{name}
+Group:          System/Libraries
+
+%description -n %{internals_libname}
+Shared libraries used by %{name}
+
+%package -n  %{service_libname}
+Summary:        Shared libraries used by %{name}
+Group:          System/Libraries
+
+%description -n %{service_libname}
+Shared libraries used by %{name}
+
+%package -n  %{ui_libname}
+Summary:        Shared libraries used by %{name}
+Group:          System/Libraries
+
+%description -n %{ui_libname}
+Shared libraries used by %{name}
+
+
 %package -n %{develname}
-Summary: Development files for %{name}
+Summary:	Development files for %{name}
+Group:		Development/KDE and Qt 
+Requires:	%{client_libname} = %{?epoch:%{epoch}:}%{version}
+Requires:	%{internals_libname} = %{?epoch:%{epoch}:}%{version}
+Requires:	%{service_libname} = %{?epoch:%{epoch}:}%{version}
+Requires:	%{ui_libname} = %{?epoch:%{epoch}:}%{version}
+Provides:	knetworkmanager-devel =  %{?epoch:%{epoch}:}%{version}-%{release}
 
 %description -n %{develname}
 Development files for %{name}
 
 %package -n knetworkmanager-openvpn
 Summary:        OpenVPN support for knetworkmanager
-Group:          System/Configuration/Networking
+Group:          Graphical desktop/KDE 
 Requires:       knetworkmanager = %{?epoch:%{epoch}:}%{version}
-Requires:       NetworkManager-openvpn
+Requires:       networkmanager-openvpn
 
 %description -n knetworkmanager-openvpn
 %{summary}.
@@ -56,10 +96,10 @@ Requires:       NetworkManager-openvpn
 
 %package -n knetworkmanager-novellvpn
 Summary:        Vpnc support for knetworkmanager
-Group:          System/Configuration/Networking
-Requires:       knetworkmanager = %{?epoch:%{epoch}:}%{version}-%{release}
+Group:          Graphical desktop/KDE
+Requires:       knetworkmanager = %{?epoch:%{epoch}:}%{version}
 # Does not exist in Mandriva
-#Requires:       NetworkManager-novellvpn 
+#Requires:       networkmanager-novellvpn 
 
 %description -n knetworkmanager-novellvpn
 %{summary}.
@@ -67,9 +107,9 @@ Requires:       knetworkmanager = %{?epoch:%{epoch}:}%{version}-%{release}
 
 %package -n knetworkmanager-vpnc
 Summary:        Vpnc support for knetworkmanager
-Group:          System/Configuration/Networking
-Requires:       knetworkmanager = %{?epoch:%{epoch}:}%{version}-%{release} 
-Requires:       NetworkManager-vpnc
+Group:          Graphical desktop/KDE 
+Requires:       knetworkmanager = %{?epoch:%{epoch}:}%{version}
+Requires:       networkmanager-vpnc
 
 %description -n knetworkmanager-vpnc
 %{summary}.
@@ -113,9 +153,21 @@ rm -rf %{buildroot}
 # TODO: probably needs to be in a %lib packge, but cannot be in %libname because no major
 %{_kde_libdir}/libsolidcontrolfuture.so
 
-%files -n %{libname}
+%files -n %{client_libname}
 %defattr(-,root,root,-)
-%{_kde_libdir}/libknm*.so.%{major}*
+%{_kde_libdir}/libknmclient.so.%{client_major}*
+
+%files -n %{internals_libname}
+%defattr(-,root,root,-)
+%{_kde_libdir}/libknminternals.so.%{internals_major}*
+
+%files -n %{service_libname}
+%defattr(-,root,root,-)
+%{_kde_libdir}/libknmservice.so.%{service_major}*
+
+%files -n %{ui_libname}
+%defattr(-,root,root,-)
+%{_kde_libdir}/libknmui.so.%{ui_major}*
 
 %files -n %{develname}
 %defattr(-,root,root,-)
