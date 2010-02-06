@@ -29,18 +29,29 @@ URL:            http://www.kde.org
 Source0:        %{srcname}-%{snapshot}.tar.xz
 BuildRequires:  libnm-util-devel
 BuildRequires:  kdebase4-workspace-devel
-Requires:       networkmanager
-Requires:	kde-solid-networkmanager
+Requires:	%{name}-common
+# plasmoid crashes if knetworkmanager is running
+Conflicts:	plasma-applet-networkmanagement
 BuildRoot:      %{_tmppath}/%{name}-%{version}-%{release}-buildroot
 
 %description
 KNetworkManager is a system tray applet for controlling network
 connections on systems that use the NetworkManager daemon.
 
+%package -n %{name}-common
+Summary:	Common files used by knetworkmanager
+Group:		System/Configuration/Networking
+Requires:	kde-solid-networkmanager
+Requires:	networkmanager
+
+%description -n %{name}-common
+Common files used by knetworkmanager and plasma-applet-networkmanagement.
+
 %package -n plasma-applet-networkmanagement
 Summary:	NetworkManager plasma applet
 Group:		Graphical desktop/KDE
-Requires:	networkmanager
+Requires:	%{name}-common
+Conflicts:	knetworkmanager
 
 %description -n plasma-applet-networkmanagement
 %{summary}
@@ -73,7 +84,6 @@ Group:          System/Libraries
 %description -n %{ui_libname}
 libknui library used by %{name}.
 
-
 %package -n %{solidcontrolfuture_libname}
 Summary:        solidcontrolfuture library used by %{name}
 Group:          System/Libraries
@@ -91,16 +101,16 @@ NetworkManager back-end for %{name}.
 %package -n %{develname}
 Summary:       Development files for %{name}                                             
 Group:         Development/KDE and Qt                                                    
-Requires:      %{client_libname} = %{?epoch:%{epoch}:}%{version}                         
-Requires:      %{internals_libname} = %{?epoch:%{epoch}:}%{version}                      
-Requires:      %{service_libname} = %{?epoch:%{epoch}:}%{version}                        
-Requires:      %{ui_libname} = %{?epoch:%{epoch}:}%{version}                             
-Provides:      knetworkmanager-devel =  %{?epoch:%{epoch}:}%{version}-%{release} 
+Requires:      %{client_libname} = %{version}                         
+Requires:      %{internals_libname} = %{version}                      
+Requires:      %{service_libname} = %{version}                        
+Requires:      %{ui_libname} = %{version}                             
+Provides:      knetworkmanager-devel =  %{version}-%{release} 
 
 %package -n knetworkmanager-openvpn
 Summary:        OpenVPN support for knetworkmanager
 Group:          Graphical desktop/KDE 
-Requires:       knetworkmanager = %{?epoch:%{epoch}:}%{version}
+Requires:       knetworkmanager = %{version}
 Requires:       networkmanager-openvpn
 
 %description -n %{develname}                                                             
@@ -113,7 +123,7 @@ Development files for %{name}
 %package -n knetworkmanager-novellvpn
 Summary:        Vpnc support for knetworkmanager
 Group:          Graphical desktop/KDE
-Requires:       knetworkmanager = %{?epoch:%{epoch}:}%{version}
+Requires:       knetworkmanager = %{version}
 # Does not exist in Mandriva
 #Requires:       networkmanager-novellvpn 
 
@@ -124,7 +134,7 @@ Requires:       knetworkmanager = %{?epoch:%{epoch}:}%{version}
 %package -n knetworkmanager-vpnc
 Summary:        Vpnc support for knetworkmanager
 Group:          Graphical desktop/KDE 
-Requires:       knetworkmanager = %{?epoch:%{epoch}:}%{version}
+Requires:       knetworkmanager = %{version}
 Requires:       networkmanager-vpnc
 
 %description -n knetworkmanager-vpnc
@@ -153,19 +163,22 @@ rm -rf %{buildroot}
 %files
 %defattr(-,root,root,-)
 %doc TODO DESIGN COPYING COPYING.LIB
+%{_kde_bindir}/knetworkmanager
+%{_kde_datadir}/autostart/kde4-knetworkmanager-autostart.desktop
+%{_kde_datadir}/applications/kde4/knetworkmanager.desktop
+
+%files -n %{name}-common
+%defattr(-,root,root,-)
 %{_sysconfdir}/dbus-1/system.d/NetworkManager-kde4.conf
 %{_kde_libdir}/kde4/kcm_networkmanagement.so
 %{_kde_libdir}/kde4/networkmanagement_pptpui.so
 %{_kde_libdir}/kde4/libexec/networkmanagement_configshell
-%{_kde_iconsdir}/hicolor/*/*/*
-%{_kde_iconsdir}/oxygen/*/*/*
-%{_kde_appsdir}/networkmanagement/
 %{_kde_datadir}/kde4/services/kcm_networkmanagement.desktop
 %{_kde_datadir}/kde4/services/networkmanagement_pptpui.desktop
 %{_kde_datadir}/kde4/servicetypes/networkmanagement_vpnuiplugin.desktop
-%{_kde_bindir}/knetworkmanager
-%{_kde_datadir}/autostart/kde4-knetworkmanager-autostart.desktop
-%{_kde_datadir}/applications/kde4/knetworkmanager.desktop
+%{_kde_iconsdir}/hicolor/*/*/*
+%{_kde_iconsdir}/oxygen/*/*/*
+%{_kde_appsdir}/networkmanagement/
 
 %files -n %{client_libname}
 %defattr(-,root,root,-)
