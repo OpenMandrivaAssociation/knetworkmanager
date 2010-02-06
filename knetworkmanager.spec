@@ -11,6 +11,9 @@
 %define internals_libname %mklibname knminternals %{internals_major}
 %define service_libname %mklibname knmservice %{service_major}
 %define ui_libname %mklibname knmui %{ui_major}
+# These shared libraries does not have a major
+%define solidcontrolfuture_libname %mklibname solidcontrolfuture
+%define knm_nm_libname %mklibname knm_nm
 %define develname %mklibname -d knetworkmanager
 %define novellvpn 0
 
@@ -42,53 +45,66 @@ Requires:	networkmanager
 %description -n plasma-applet-networkmanagement
 %{summary}
 
-# TODO: fix summaries and descriptions
-%package -n  %{client_libname}
-Summary:	Shared libraries used by %{name}
+%package -n %{client_libname}
+Summary:	libknclient library used by %{name}
 Group:		System/Libraries 
 
 %description -n %{client_libname}
-Shared libraries used by %{name}
+libknclient library used by %{name}.
 
-%package -n  %{internals_libname}
-Summary:        Shared libraries used by %{name}
+%package -n %{internals_libname}
+Summary:        libkninternals library used by %{name}
 Group:          System/Libraries
 
 %description -n %{internals_libname}
-Shared libraries used by %{name}
+libkninternals library used by %{name}
 
-%package -n  %{service_libname}
-Summary:        Shared libraries used by %{name}
+%package -n %{service_libname}
+Summary:        libknservice library used by %{name}
 Group:          System/Libraries
 
 %description -n %{service_libname}
-Shared libraries used by %{name}
+libknservice library used by %{name}.
 
-%package -n  %{ui_libname}
-Summary:        Shared libraries used by %{name}
+%package -n %{ui_libname}
+Summary:        libknui library used by %{name}
 Group:          System/Libraries
 
 %description -n %{ui_libname}
-Shared libraries used by %{name}
+libknui library used by %{name}.
 
+
+%package -n %{solidcontrolfuture_libname}
+Summary:        solidcontrolfuture library used by %{name}
+Group:          System/Libraries
+
+%description -n %{solidcontrolfuture_libname}
+libsolidcontrolfuture library used by %{name}.
+
+%package -n %{knm_nm_libname}
+Summary:	NetworkManager back-end for %{name}
+Group:		System/Libraries
+
+%description -n %{knm_nm_libname}
+NetworkManager back-end for %{name}.
 
 %package -n %{develname}
-Summary:	Development files for %{name}
-Group:		Development/KDE and Qt 
-Requires:	%{client_libname} = %{?epoch:%{epoch}:}%{version}
-Requires:	%{internals_libname} = %{?epoch:%{epoch}:}%{version}
-Requires:	%{service_libname} = %{?epoch:%{epoch}:}%{version}
-Requires:	%{ui_libname} = %{?epoch:%{epoch}:}%{version}
-Provides:	knetworkmanager-devel =  %{?epoch:%{epoch}:}%{version}-%{release}
-
-%description -n %{develname}
-Development files for %{name}
+Summary:       Development files for %{name}                                             
+Group:         Development/KDE and Qt                                                    
+Requires:      %{client_libname} = %{?epoch:%{epoch}:}%{version}                         
+Requires:      %{internals_libname} = %{?epoch:%{epoch}:}%{version}                      
+Requires:      %{service_libname} = %{?epoch:%{epoch}:}%{version}                        
+Requires:      %{ui_libname} = %{?epoch:%{epoch}:}%{version}                             
+Provides:      knetworkmanager-devel =  %{?epoch:%{epoch}:}%{version}-%{release} 
 
 %package -n knetworkmanager-openvpn
 Summary:        OpenVPN support for knetworkmanager
 Group:          Graphical desktop/KDE 
 Requires:       knetworkmanager = %{?epoch:%{epoch}:}%{version}
 Requires:       networkmanager-openvpn
+
+%description -n %{develname}                                                             
+Development files for %{name}   
 
 %description -n knetworkmanager-openvpn
 %{summary}.
@@ -150,8 +166,6 @@ rm -rf %{buildroot}
 %{_kde_bindir}/knetworkmanager
 %{_kde_datadir}/autostart/kde4-knetworkmanager-autostart.desktop
 %{_kde_datadir}/applications/kde4/knetworkmanager.desktop
-# TODO: probably needs to be in a %lib packge, but cannot be in %libname because no major
-%{_kde_libdir}/libsolidcontrolfuture.so
 
 %files -n %{client_libname}
 %defattr(-,root,root,-)
@@ -169,9 +183,20 @@ rm -rf %{buildroot}
 %defattr(-,root,root,-)
 %{_kde_libdir}/libknmui.so.%{ui_major}*
 
-%files -n %{develname}
+%files -n %{solidcontrolfuture_libname}
 %defattr(-,root,root,-)
-%{_kde_libdir}/libknm*.so
+%{_kde_libdir}/libsolidcontrolfuture.so
+
+%files -n %{knm_nm_libname}
+%defattr(-,root,root,-)
+%{_kde_libdir}/libknm_nm.so
+
+%files -n %{develname}
+ %defattr(-,root,root,-)
+%{_kde_libdir}/libknmclient.so
+%{_kde_libdir}/libknminternals.so
+%{_kde_libdir}/libknmservice.so
+%{_kde_libdir}/libknmui.so
 
 %files -n knetworkmanager-openvpn
 %defattr(-,root,root,-)
