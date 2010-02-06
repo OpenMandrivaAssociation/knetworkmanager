@@ -30,7 +30,7 @@ Source0:        %{srcname}-%{snapshot}.tar.xz
 BuildRequires:  libnm-util-devel
 BuildRequires:  kdebase4-workspace-devel
 Requires:       networkmanager
-# TODO: probably a requires on solid networkmanager back-end is required too
+Requires:	kde-solid-networkmanager
 BuildRoot:      %{_tmppath}/%{name}-%{version}-%{release}-buildroot
 
 %description
