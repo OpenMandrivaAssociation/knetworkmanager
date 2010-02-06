@@ -29,7 +29,7 @@ BuildRequires:  libnm-util-devel
 BuildRequires:  kdebase4-workspace-devel
 Requires:	%{name}-common
 # plasmoid crashes if knetworkmanager is running
-Conflicts:	plasma-applet-networkmanagement <= %{version}-%{release}
+Conflicts:	plasma-applet-networkmanagement
 BuildRoot:      %{_tmppath}/%{name}-%{version}-%{release}-buildroot
 
 %description
@@ -49,7 +49,7 @@ Common files used by knetworkmanager and plasma-applet-networkmanagement.
 Summary:	NetworkManager plasma applet
 Group:		Graphical desktop/KDE
 Requires:	%{name}-common
-Conflicts:	knetworkmanager <= %{version}-%{release}
+Conflicts:	knetworkmanager
 
 %description -n plasma-applet-networkmanagement
 %{summary}
