@@ -1,5 +1,3 @@
-# This is work in progress!
-
 %define snapshot r1084746
 %define srcname networkmanagement
 
@@ -23,7 +21,7 @@ Summary:        KDE NetworkManager
 Version:        4.4
 Release:        %mkrel 0.%{snapshot}.1
 Group:          Graphical desktop/KDE 
-License:        GPLv2+
+License:        (GPLv2 or GPLv3) and GPLv2+ and LGPLv2+ and LGPLv2 
 URL:            http://www.kde.org
 #svn co svn://anonsvn.kde.org/home/kde/trunk/kdereview/networkmanagement/
 Source0:        %{srcname}-%{snapshot}.tar.xz
@@ -31,7 +29,7 @@ BuildRequires:  libnm-util-devel
 BuildRequires:  kdebase4-workspace-devel
 Requires:	%{name}-common
 # plasmoid crashes if knetworkmanager is running
-Conflicts:	plasma-applet-networkmanagement
+Conflicts:	plasma-applet-networkmanagement <= %{version}-%{release}
 BuildRoot:      %{_tmppath}/%{name}-%{version}-%{release}-buildroot
 
 %description
@@ -51,7 +49,7 @@ Common files used by knetworkmanager and plasma-applet-networkmanagement.
 Summary:	NetworkManager plasma applet
 Group:		Graphical desktop/KDE
 Requires:	%{name}-common
-Conflicts:	knetworkmanager
+Conflicts:	knetworkmanager <= %{version}-%{release}
 
 %description -n plasma-applet-networkmanagement
 %{summary}
