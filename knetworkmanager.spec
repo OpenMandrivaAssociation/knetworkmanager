@@ -1,8 +1,9 @@
-%define snapshot r1084746
+%define snapshot r1148396
 %define srcname networkmanagement
 
 %define develname %mklibname -d knetworkmanager
 %define novellvpn 0
+%define strongswan 0
 
 Name:           knetworkmanager
 Summary:        KDE NetworkManager
@@ -11,7 +12,7 @@ Release:        %mkrel 0.%{snapshot}.1
 Group:          Graphical desktop/KDE 
 License:        (GPLv2 or GPLv3) and GPLv2+ and LGPLv2+ and LGPLv2 
 URL:            http://www.kde.org
-#svn co svn://anonsvn.kde.org/home/kde/trunk/kdereview/networkmanagement/
+# ./create_tarball.rb -n -a networkmanagement -r SNAPSHOT
 Source0:        %{srcname}-%{snapshot}.tar.xz
 BuildRequires:  libnm-util-devel
 BuildRequires:  kdebase4-workspace-devel
@@ -226,6 +227,28 @@ Requires:       knetworkmanager = %{version}
 
 #--------------------------------------------------------------------
 
+%if %{strongswan}
+
+%package -n knetworkmanager-strongswan
+Summary:        strongSwan support for knetworkmanager
+Group:          Graphical desktop/KDE 
+Requires:       knetworkmanager = %{version}
+# Does not exist in Mandriva
+#Requires:       networkmanager-strongswan
+
+%description -n knetworkmanager-strongswan
+%{summary}.
+
+%files -n knetworkmanager-strongswan
+%defattr(-,root,root,-)
+%{_kde_libdir}/kde4/networkmanagement_strongswanui.so
+%{_kde_datadir}/kde4/services/networkmanagement_strongswanui.desktop
+
+%endif
+
+#--------------------------------------------------------------------
+
+
 %package -n knetworkmanager-vpnc
 Summary:        Vpnc support for knetworkmanager
 Group:          Graphical desktop/KDE 
@@ -245,9 +268,12 @@ Requires:       networkmanager-vpnc
 
 %prep
 %setup -q -n %{srcname}
+%apply_patches
 
 %build
-%cmake_kde4 -DDBUS_SYSTEM_POLICY_DIR=%{_sysconfdir}/dbus-1/system.d 
+%cmake_kde4 \
+	-DDBUS_SYSTEM_POLICY_DIR=%{_sysconfdir}/dbus-1/system.d \
+	-DINSTALL_KNM_AUTOSTART=ON
 %make
 
 %install
@@ -259,29 +285,10 @@ rm %{buildroot}%{_kde_libdir}/kde4/networkmanagement_novellvpnui.so
 rm %{buildroot}%{_kde_datadir}/kde4/services/networkmanagement_novellvpnui.desktop
 %endif
 
+%if ! %{strongswan}
+rm %{buildroot}%{_kde_libdir}/kde4/networkmanagement_strongswanui.so
+rm %{buildroot}%{_kde_datadir}/kde4/services/networkmanagement_strongswanui.desktop
+%endif
+
 %clean
 rm -rf %{buildroot}
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
