@@ -14,6 +14,11 @@ License:        (GPLv2 or GPLv3) and GPLv2+ and LGPLv2+ and LGPLv2
 URL:            http://www.kde.org
 # ./create_tarball.rb -n -a networkmanagement -r SNAPSHOT
 Source0:        %{srcname}-%{snapshot}.tar.xz
+
+# (bor) really support non-static VPN secrets (vpnc so far)
+# ref: https://bugs.kde.org/show_bug.cgi?id=244416
+Patch0:		networkmanagement-0.9-vpnc_always_ask.patch
+
 BuildRequires:  libnm-util-devel
 BuildRequires:  kdebase4-workspace-devel
 Requires:	%{name}-common
