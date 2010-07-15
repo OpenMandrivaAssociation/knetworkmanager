@@ -198,7 +198,7 @@ Development files for %{name}
 %package -n knetworkmanager-openvpn
 Summary:        OpenVPN support for knetworkmanager
 Group:          Graphical desktop/KDE 
-Requires:       knetworkmanager = %{version}
+#Requires:       knetworkmanager = %{version}
 Requires:       networkmanager-openvpn
 
 %description -n knetworkmanager-openvpn
@@ -216,7 +216,7 @@ Requires:       networkmanager-openvpn
 %package -n knetworkmanager-novellvpn
 Summary:        Vpnc support for knetworkmanager
 Group:          Graphical desktop/KDE
-Requires:       knetworkmanager = %{version}
+#Requires:       knetworkmanager = %{version}
 # Does not exist in Mandriva
 #Requires:       networkmanager-novellvpn 
 
@@ -237,7 +237,7 @@ Requires:       knetworkmanager = %{version}
 %package -n knetworkmanager-strongswan
 Summary:        strongSwan support for knetworkmanager
 Group:          Graphical desktop/KDE 
-Requires:       knetworkmanager = %{version}
+#Requires:       knetworkmanager = %{version}
 # Does not exist in Mandriva
 #Requires:       networkmanager-strongswan
 
@@ -257,7 +257,7 @@ Requires:       knetworkmanager = %{version}
 %package -n knetworkmanager-vpnc
 Summary:        Vpnc support for knetworkmanager
 Group:          Graphical desktop/KDE 
-Requires:       knetworkmanager = %{version}
+#Requires:       knetworkmanager = %{version}
 Requires:       networkmanager-vpnc
 
 %description -n knetworkmanager-vpnc
