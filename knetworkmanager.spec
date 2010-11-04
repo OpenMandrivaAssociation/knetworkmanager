@@ -1,4 +1,4 @@
-%define snapshot r1148396
+%define snapshot r1192577
 %define srcname networkmanagement
 
 %define develname %mklibname -d knetworkmanager
@@ -13,7 +13,7 @@ Group:          Graphical desktop/KDE
 License:        (GPLv2 or GPLv3) and GPLv2+ and LGPLv2+ and LGPLv2 
 URL:            http://www.kde.org
 # ./create_tarball.rb -n -a networkmanagement -r SNAPSHOT
-Source0:        %{srcname}-%{snapshot}.tar.xz
+Source0:        %{srcname}-%{snapshot}.tar.bz2
 
 # (bor) really support non-static VPN secrets (vpnc so far)
 # ref: https://bugs.kde.org/show_bug.cgi?id=244416
@@ -48,7 +48,7 @@ Requires:	networkmanager
 %description -n %{name}-common
 Common files used by knetworkmanager and plasma-applet-networkmanagement.
 
-%files -n %{name}-common
+%files -n %{name}-common -f %{name}.lang
 %defattr(-,root,root,-)
 %{_sysconfdir}/dbus-1/system.d/NetworkManager-kde4.conf
 %{_kde_libdir}/kde4/kcm_networkmanagement.so
@@ -272,7 +272,7 @@ Requires:       networkmanager-vpnc
 
 
 %prep
-%setup -q -n %{srcname}
+%setup -q -n %{srcname}-%{version}
 %apply_patches
 
 %build
@@ -294,6 +294,8 @@ rm %{buildroot}%{_kde_datadir}/kde4/services/networkmanagement_novellvpnui.deskt
 rm %{buildroot}%{_kde_libdir}/kde4/networkmanagement_strongswanui.so
 rm %{buildroot}%{_kde_datadir}/kde4/services/networkmanagement_strongswanui.desktop
 %endif
+
+%find_lang %{name} %{name} lib%{name} plasma_applet_networkmanagement
 
 %clean
 rm -rf %{buildroot}
