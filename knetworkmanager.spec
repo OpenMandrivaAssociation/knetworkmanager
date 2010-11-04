@@ -3,12 +3,13 @@
 
 %define develname %mklibname -d knetworkmanager
 %define novellvpn 0
+%define pptp 0
 %define strongswan 0
 
 Name:           knetworkmanager
 Summary:        KDE NetworkManager
 Version:        0.9
-Release:        %mkrel 0.%{snapshot}.1
+Release:        %mkrel 0.%{snapshot}.2
 Group:          Graphical desktop/KDE 
 License:        (GPLv2 or GPLv3) and GPLv2+ and LGPLv2+ and LGPLv2 
 URL:            http://www.kde.org
@@ -52,10 +53,8 @@ Common files used by knetworkmanager and plasma-applet-networkmanagement.
 %defattr(-,root,root,-)
 %{_sysconfdir}/dbus-1/system.d/NetworkManager-kde4.conf
 %{_kde_libdir}/kde4/kcm_networkmanagement.so
-%{_kde_libdir}/kde4/networkmanagement_pptpui.so
 %{_kde_libdir}/kde4/libexec/networkmanagement_configshell
 %{_kde_datadir}/kde4/services/kcm_networkmanagement.desktop
-%{_kde_datadir}/kde4/services/networkmanagement_pptpui.desktop
 %{_kde_datadir}/kde4/servicetypes/networkmanagement_vpnuiplugin.desktop
 %{_kde_iconsdir}/hicolor/*/*/*
 %{_kde_iconsdir}/oxygen/*/*/*
@@ -232,6 +231,27 @@ Group:          Graphical desktop/KDE
 
 #--------------------------------------------------------------------
 
+%if %{pptp}
+
+%package -n knetworkmanager-pptp
+Summary:        Pptp support for knetworkmanager
+Group:          Graphical desktop/KDE
+#Requires:       knetworkmanager = %{version}
+# Does not exist in Mandriva
+#Requires:       networkmanager-pptp 
+
+%description -n knetworkmanager-pptp
+%{summary}.
+
+%files -n knetworkmanager-pptp
+%defattr(-,root,root,-)
+%{_kde_libdir}/kde4/networkmanagement_pptpui.so
+%{_kde_datadir}/kde4/services/networkmanagement_pptpui.desktop
+
+%endif
+
+#--------------------------------------------------------------------
+
 %if %{strongswan}
 
 %package -n knetworkmanager-strongswan
@@ -288,6 +308,11 @@ rm -rf %{buildroot}
 %if ! %{novellvpn}
 rm %{buildroot}%{_kde_libdir}/kde4/networkmanagement_novellvpnui.so
 rm %{buildroot}%{_kde_datadir}/kde4/services/networkmanagement_novellvpnui.desktop
+%endif
+
+%if ! %{pptp}
+rm %{buildroot}%{_kde_libdir}/kde4/networkmanagement_pptpui.so
+rm %{buildroot}%{_kde_datadir}/kde4/services/networkmanagement_pptpui.desktop
 %endif
 
 %if ! %{strongswan}
