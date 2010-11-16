@@ -9,7 +9,7 @@
 Name:           knetworkmanager
 Summary:        KDE NetworkManager
 Version:        0.9
-Release:        %mkrel 0.%{snapshot}.3
+Release:        %mkrel 0.%{snapshot}.4
 Group:          Graphical desktop/KDE 
 License:        (GPLv2 or GPLv3) and GPLv2+ and LGPLv2+ and LGPLv2 
 URL:            http://www.kde.org
@@ -58,7 +58,7 @@ Common files used by knetworkmanager and plasma-applet-networkmanagement.
 %{_kde_datadir}/kde4/servicetypes/networkmanagement_vpnuiplugin.desktop
 %{_kde_iconsdir}/hicolor/*/*/*
 %{_kde_iconsdir}/oxygen/*/*/*
-%if %mdvver < 201100
+%if %mdvver < 201010
 %{_kde_appsdir}/desktoptheme/default/icons/network.svgz
 %endif
 %{_kde_appsdir}/networkmanagement/
