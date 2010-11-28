@@ -1,4 +1,4 @@
-%define snapshot r1198724
+%define snapshot r1201724
 %define srcname networkmanagement
 
 %define develname %mklibname -d knetworkmanager
