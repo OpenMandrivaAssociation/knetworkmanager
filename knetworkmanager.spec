@@ -9,8 +9,8 @@
 Name:           knetworkmanager
 Summary:        KDE NetworkManager
 Version:        0.9
-Release:        %mkrel 0.%{snapshot}.1
-Group:          Graphical desktop/KDE 
+Release:        %mkrel 0.%{snapshot}.2
+Group:          Graphical desktop/KDE
 License:        (GPLv2 or GPLv3) and GPLv2+ and LGPLv2+ and LGPLv2 
 URL:            http://www.kde.org
 # ./create_tarball.rb -n -a networkmanagement -r SNAPSHOT
@@ -43,7 +43,7 @@ connections on systems that use the NetworkManager daemon.
 %package -n %{name}-common
 Summary:	Common files used by knetworkmanager
 Group:		System/Configuration/Networking
-Requires:	kde-solid-networkmanager
+Requires:	kdebase4-workspace
 Requires:	networkmanager
 
 %description -n %{name}-common
