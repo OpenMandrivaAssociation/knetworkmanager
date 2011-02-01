@@ -3,13 +3,13 @@
 
 %define develname %mklibname -d knetworkmanager
 %define novellvpn 0
-%define pptp 0
+%define pptp 1
 %define strongswan 0
 
 Name:           knetworkmanager
 Summary:        KDE NetworkManager
 Version:        0.9
-Release:        %mkrel 0.%{snapshot}.2
+Release:        %mkrel 0.%{snapshot}.3
 Group:          Graphical desktop/KDE
 License:        (GPLv2 or GPLv3) and GPLv2+ and LGPLv2+ and LGPLv2 
 URL:            http://www.kde.org
@@ -240,8 +240,7 @@ Group:          Graphical desktop/KDE
 Summary:        Pptp support for knetworkmanager
 Group:          Graphical desktop/KDE
 #Requires:       knetworkmanager = %{version}
-# Does not exist in Mandriva
-#Requires:       networkmanager-pptp 
+Requires:       networkmanager-pptp 
 
 %description -n knetworkmanager-pptp
 %{summary}.
