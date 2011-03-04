@@ -1,4 +1,6 @@
-%define snapshot r1201724
+%define gitrev eaf85628028ca163f6cd206182c659d54cd5ed0f
+%define datetime 20110304
+#define svnrev 
 %define srcname networkmanagement
 
 %define develname %mklibname -d knetworkmanager
@@ -9,16 +11,15 @@
 Name:           knetworkmanager
 Summary:        KDE NetworkManager
 Version:        0.9
-Release:        %mkrel 0.%{snapshot}.3
+Release:        %mkrel 0.%{datetime}.1
+Epoch:		1
 Group:          Graphical desktop/KDE
 License:        (GPLv2 or GPLv3) and GPLv2+ and LGPLv2+ and LGPLv2 
 URL:            http://www.kde.org
-# ./create_tarball.rb -n -a networkmanagement -r SNAPSHOT
-Source0:        %{srcname}-%{snapshot}.tar.bz2
-
-# (bor) really support non-static VPN secrets (vpnc so far)
-# ref: https://bugs.kde.org/show_bug.cgi?id=244416
-Patch0:		networkmanagement-0.9-vpnc_always_ask.patch
+# The following needs modified create_tarball.rb with GIT
+# support and corresponding config.ini entry
+# ./create_tarball.rb -n -a networkmanagement -c GITREV
+Source0:        %{srcname}-%{version}.tar.bz2
 
 BuildRequires:  libnm-util-devel
 BuildRequires:  kdebase4-workspace-devel
@@ -72,14 +73,17 @@ Requires:	%{name}-common
 Conflicts:	knetworkmanager
 
 %description -n plasma-applet-networkmanagement
-%{summary}
+Network Management Plasma applet for controlling network
+connections on systems that use the NetworkManager service.
 
 %files -n plasma-applet-networkmanagement
 %defattr(-,root,root,-)
 %{_kde_datadir}/kde4/services/plasma-applet-networkmanagement.desktop
+%{_kde_datadir}/kde4/services/plasma-engine-networkmanagement.desktop
 %{_kde_datadir}/kde4/services/kcm_networkmanagement_tray.desktop
 %{_kde_datadir}/kde4/services/kded/networkmanagement.desktop
 %{_kde_libdir}/kde4/plasma_applet_networkmanagement.so
+%{_kde_libdir}/kde4/plasma_engine_networkmanagement.so
 %{_kde_libdir}/kde4/kded_networkmanagement.so
 %{_kde_libdir}/kde4/kcm_networkmanagement_tray.so
 
