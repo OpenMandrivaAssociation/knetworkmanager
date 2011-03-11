@@ -1,5 +1,5 @@
-%define gitrev eaf85628028ca163f6cd206182c659d54cd5ed0f
-%define datetime 20110304
+%define gitrev e14fea019deca090913ab3f67b41bf6c7ebde7df
+%define datetime 20110311
 #define svnrev 
 %define srcname networkmanagement
 
@@ -17,8 +17,11 @@ Group:          Graphical desktop/KDE
 License:        (GPLv2 or GPLv3) and GPLv2+ and LGPLv2+ and LGPLv2 
 URL:            http://www.kde.org
 # The following needs modified create_tarball.rb with GIT
-# support and corresponding config.ini entry
+# support and corresponding config.ini entry; both are available
+# at http://kenobi.mandriva.com/~bor/knetworkmanager/
+#
 # ./create_tarball.rb -n -a networkmanagement -c GITREV
+# 
 Source0:        %{srcname}-%{version}.tar.bz2
 
 BuildRequires:  libnm-util-devel
