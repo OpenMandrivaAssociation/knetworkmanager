@@ -1,5 +1,5 @@
-%define gitrev e14fea019deca090913ab3f67b41bf6c7ebde7df
-%define datetime 20110311
+%define gitrev 11645bb0c38545d343ac014f4b402244db973c16
+%define datetime 20110314
 #define svnrev 
 %define srcname networkmanagement
 
@@ -23,6 +23,10 @@ URL:            http://www.kde.org
 # ./create_tarball.rb -n -a networkmanagement -c GITREV
 # 
 Source0:        %{srcname}-%{version}.tar.bz2
+
+# upstream/review board patches
+Patch100:	vpnc-do-not-save-always-ask-secrets.patch
+Patch101:	fix-secrets-leak-with-DontSave.patch
 
 BuildRequires:  libnm-util-devel
 BuildRequires:  kdebase4-workspace-devel
