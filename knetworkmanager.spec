@@ -1,5 +1,5 @@
-%define gitrev 11645bb0c38545d343ac014f4b402244db973c16
-%define datetime 20110314
+%define gitrev 90ed76441bc0a9946d653312c53a94cd683e1bc7
+%define datetime 20110607
 #define svnrev 
 %define srcname networkmanagement
 
@@ -11,7 +11,7 @@
 Name:           knetworkmanager
 Summary:        KDE NetworkManager
 Version:        0.9
-Release:        %mkrel 0.%{datetime}.2
+Release:        0.%{datetime}.1
 Epoch:		1
 Group:          Graphical desktop/KDE
 License:        (GPLv2 or GPLv3) and GPLv2+ and LGPLv2+ and LGPLv2 
@@ -25,26 +25,16 @@ URL:            http://www.kde.org
 Source0:        %{srcname}-%{version}.tar.bz2
 
 # upstream/review board patches
-Patch100:	vpnc-do-not-save-always-ask-secrets.patch
-Patch101:	fix-secrets-leak-with-DontSave.patch
 
 BuildRequires:  libnm-util-devel
 BuildRequires:  kdebase4-workspace-devel
 Requires:	%{name}-common
 # plasmoid crashes if knetworkmanager is running
 Conflicts:	plasma-applet-networkmanagement
-BuildRoot:      %{_tmppath}/%{name}-%{version}-%{release}-buildroot
 
 %description
 KNetworkManager is a system tray applet for controlling network
 connections on systems that use the NetworkManager daemon.
-
-%files
-%defattr(-,root,root,-)
-%doc TODO DESIGN COPYING COPYING.LIB
-%{_kde_bindir}/knetworkmanager
-%{_kde_datadir}/autostart/kde4-knetworkmanager-autostart.desktop
-%{_kde_datadir}/applications/kde4/knetworkmanager.desktop
 
 #--------------------------------------------------------------------
 
@@ -58,17 +48,12 @@ Requires:	networkmanager
 Common files used by knetworkmanager and plasma-applet-networkmanagement.
 
 %files -n %{name}-common -f %{name}.lang
-%defattr(-,root,root,-)
 %{_sysconfdir}/dbus-1/system.d/NetworkManager-kde4.conf
 %{_kde_libdir}/kde4/kcm_networkmanagement.so
 %{_kde_libdir}/kde4/libexec/networkmanagement_configshell
 %{_kde_datadir}/kde4/services/kcm_networkmanagement.desktop
 %{_kde_datadir}/kde4/servicetypes/networkmanagement_vpnuiplugin.desktop
-%{_kde_iconsdir}/hicolor/*/*/*
 %{_kde_iconsdir}/oxygen/*/*/*
-%if %mdvver < 201010
-%{_kde_appsdir}/desktoptheme/default/icons/network.svgz
-%endif
 %{_kde_appsdir}/networkmanagement/
 
 #--------------------------------------------------------------------
@@ -78,13 +63,13 @@ Summary:	NetworkManager plasma applet
 Group:		Graphical desktop/KDE
 Requires:	%{name}-common
 Conflicts:	knetworkmanager
+Obsoletes:      %name < 1:0.9-0.20110607.1
 
 %description -n plasma-applet-networkmanagement
 Network Management Plasma applet for controlling network
 connections on systems that use the NetworkManager service.
 
 %files -n plasma-applet-networkmanagement
-%defattr(-,root,root,-)
 %{_kde_datadir}/kde4/services/plasma-applet-networkmanagement.desktop
 %{_kde_datadir}/kde4/services/plasma-engine-networkmanagement.desktop
 %{_kde_datadir}/kde4/services/kcm_networkmanagement_tray.desktop
@@ -107,7 +92,6 @@ Group:		System/Libraries
 libknclient library used by %{name}.
 
 %files -n %{libknmclient}
-%defattr(-,root,root,-)
 %{_kde_libdir}/libknmclient.so.%{knmclient_major}*
 
 #--------------------------------------------------------------------
@@ -123,7 +107,6 @@ Group:          System/Libraries
 libkninternals library used by %{name}
 
 %files -n %{libknminternals}
-%defattr(-,root,root,-)
 %{_kde_libdir}/libknminternals.so.%{libkinternals_major}*
 
 #--------------------------------------------------------------------
@@ -139,7 +122,6 @@ Group:          System/Libraries
 libknservice library used by %{name}.
 
 %files -n %{libknmservice}
-%defattr(-,root,root,-)
 %{_kde_libdir}/libknmservice.so.%{libservice_major}*
 
 #--------------------------------------------------------------------
@@ -154,7 +136,6 @@ Group:          System/Libraries
 libknui library used by %{name}.
 
 %files -n %{libknmui}
-%defattr(-,root,root,-)
 %{_kde_libdir}/libknmui.so.%{libknmui_major}*
 
 #--------------------------------------------------------------------
@@ -168,7 +149,6 @@ Group:          System/Libraries
 libsolidcontrolfuture library used by %{name}.
 
 %files -n %{libsolidcontrolfuture}
-%defattr(-,root,root,-)
 %{_kde_libdir}/libsolidcontrolfuture.so
 
 #--------------------------------------------------------------------
@@ -182,7 +162,6 @@ Group:		System/Libraries
 NetworkManager back-end for %{name}.
 
 %files -n %{libknm_nm}
-%defattr(-,root,root,-)
 %{_kde_libdir}/libknm_nm.so
 
 #--------------------------------------------------------------------
@@ -200,7 +179,6 @@ Provides:      knetworkmanager-devel =  %{version}-%{release}
 Development files for %{name}   
 
 %files -n %{develname}
- %defattr(-,root,root,-)
 %{_kde_libdir}/libknmclient.so
 %{_kde_libdir}/libknminternals.so
 %{_kde_libdir}/libknmservice.so
@@ -211,14 +189,12 @@ Development files for %{name}
 %package -n knetworkmanager-openvpn
 Summary:        OpenVPN support for knetworkmanager
 Group:          Graphical desktop/KDE 
-#Requires:       knetworkmanager = %{version}
 Requires:       networkmanager-openvpn
 
 %description -n knetworkmanager-openvpn
 %{summary}.
 
 %files -n knetworkmanager-openvpn
-%defattr(-,root,root,-)
 %{_kde_libdir}/kde4/networkmanagement_openvpnui.so
 %{_kde_datadir}/kde4/services/networkmanagement_openvpnui.desktop
 
@@ -229,15 +205,11 @@ Requires:       networkmanager-openvpn
 %package -n knetworkmanager-novellvpn
 Summary:        Vpnc support for knetworkmanager
 Group:          Graphical desktop/KDE
-#Requires:       knetworkmanager = %{version}
-# Does not exist in Mandriva
-#Requires:       networkmanager-novellvpn 
 
 %description -n knetworkmanager-novellvpn
 %{summary}.
 
 %files -n knetworkmanager-novellvpn
-%defattr(-,root,root,-)
 %{_kde_libdir}/kde4/networkmanagement_novellvpnui.so
 %{_kde_datadir}/kde4/services/networkmanagement_novellvpnui.desktop
 
@@ -250,14 +222,12 @@ Group:          Graphical desktop/KDE
 %package -n knetworkmanager-pptp
 Summary:        Pptp support for knetworkmanager
 Group:          Graphical desktop/KDE
-#Requires:       knetworkmanager = %{version}
 Requires:       networkmanager-pptp 
 
 %description -n knetworkmanager-pptp
 %{summary}.
 
 %files -n knetworkmanager-pptp
-%defattr(-,root,root,-)
 %{_kde_libdir}/kde4/networkmanagement_pptpui.so
 %{_kde_datadir}/kde4/services/networkmanagement_pptpui.desktop
 
@@ -270,18 +240,13 @@ Requires:       networkmanager-pptp
 %package -n knetworkmanager-strongswan
 Summary:        strongSwan support for knetworkmanager
 Group:          Graphical desktop/KDE 
-#Requires:       knetworkmanager = %{version}
-# Does not exist in Mandriva
-#Requires:       networkmanager-strongswan
 
 %description -n knetworkmanager-strongswan
 %{summary}.
 
 %files -n knetworkmanager-strongswan
-%defattr(-,root,root,-)
 %{_kde_libdir}/kde4/networkmanagement_strongswanui.so
 %{_kde_datadir}/kde4/services/networkmanagement_strongswanui.desktop
-
 %endif
 
 #--------------------------------------------------------------------
@@ -290,14 +255,12 @@ Group:          Graphical desktop/KDE
 %package -n knetworkmanager-vpnc
 Summary:        Vpnc support for knetworkmanager
 Group:          Graphical desktop/KDE 
-#Requires:       knetworkmanager = %{version}
 Requires:       networkmanager-vpnc
 
 %description -n knetworkmanager-vpnc
 %{summary}.
 
 %files -n knetworkmanager-vpnc
-%defattr(-,root,root,-)
 %{_kde_libdir}/kde4/networkmanagement_vpncui.so
 %{_kde_datadir}/kde4/services/networkmanagement_vpncui.desktop
 
@@ -315,7 +278,6 @@ Requires:       networkmanager-vpnc
 %make
 
 %install
-rm -rf %{buildroot}
 %makeinstall_std -C build
 
 %if ! %{novellvpn}
@@ -335,5 +297,3 @@ rm %{buildroot}%{_kde_datadir}/kde4/services/networkmanagement_strongswanui.desk
 
 %find_lang %{name} %{name} lib%{name} plasma_applet_networkmanagement
 
-%clean
-rm -rf %{buildroot}
