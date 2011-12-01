@@ -14,7 +14,7 @@
 Name:           knetworkmanager
 Summary:        KDE NetworkManager
 Version:        0.9
-Release:        1.%{datetime}.1
+Release:        1.%{datetime}.2
 Epoch:		1
 Group:          Graphical desktop/KDE
 License:        (GPLv2 or GPLv3) and GPLv2+ and LGPLv2+ and LGPLv2 
