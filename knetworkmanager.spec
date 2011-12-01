@@ -1,5 +1,5 @@
-%define gitrev 90ed76441bc0a9946d653312c53a94cd683e1bc7
-%define datetime 20110607
+%define gitrev aa2e2a7f61234f9790d046cfd761e110bb2750a2
+%define datetime 20111130
 #define svnrev 
 %define srcname networkmanagement
 
@@ -7,34 +7,42 @@
 %define novellvpn 0
 %define pptp 1
 %define strongswan 0
+%define openvn 1
+%define vpnc 1
+%define openconnect 1
 
 Name:           knetworkmanager
 Summary:        KDE NetworkManager
 Version:        0.9
-Release:        0.%{datetime}.1
+Release:        1.%{datetime}.1
 Epoch:		1
 Group:          Graphical desktop/KDE
 License:        (GPLv2 or GPLv3) and GPLv2+ and LGPLv2+ and LGPLv2 
 URL:            http://www.kde.org
-# The following needs modified create_tarball.rb with GIT
-# support and corresponding config.ini entry; both are available
-# at http://kenobi.mandriva.com/~bor/knetworkmanager/
-#
-# ./create_tarball.rb -n -a networkmanagement -c GITREV
-# 
-Source0:        %{srcname}-%{version}.tar.bz2
+#Source get from git
+# git clone git://anongit.kde.org/networkmanagement 
+# git archive --format=tar --prefix=networkmanagement/ --remote=git://anongit.kde.org/networkmanagement v0.9.0_rc3 | xz -9 >  networkmanagement-20111022.tar.xz                                                                            
+Source0:        %{srcname}-%{datetime}.tar.xz
+Source1:        %{srcname}-l10n.tar.xz
+Patch0:		networkmanagement-0.9-useversion.patch
+Patch1:		networkmanagement-0.9-compile-po-files.patch
 
-# upstream/review board patches
-
-BuildRequires:  libnm-util-devel
+BuildRequires:  pkgconfig(libnm-util) >= 0.9
+BuildRequires:  mobile-broadband-provider-info
 BuildRequires:  kdebase4-workspace-devel
+%if %{openconnect}
+BuildRequires:	pkgconfig(openconnect) >= 3.10
+%endif
 Requires:	%{name}-common
 # plasmoid crashes if knetworkmanager is running
-Conflicts:	plasma-applet-networkmanagement
+Requires:	plasma-applet-networkmanagement
 
 %description
 KNetworkManager is a system tray applet for controlling network
 connections on systems that use the NetworkManager daemon.
+
+%files
+%doc TODO DESIGN COPYING COPYING.LIB README.install.urpmi
 
 #--------------------------------------------------------------------
 
@@ -62,22 +70,25 @@ Common files used by knetworkmanager and plasma-applet-networkmanagement.
 Summary:	NetworkManager plasma applet
 Group:		Graphical desktop/KDE
 Requires:	%{name}-common
-Conflicts:	knetworkmanager
-Obsoletes:      %name < 1:0.9-0.20110607.1
 
 %description -n plasma-applet-networkmanagement
 Network Management Plasma applet for controlling network
 connections on systems that use the NetworkManager service.
 
-%files -n plasma-applet-networkmanagement
-%{_kde_datadir}/kde4/services/plasma-applet-networkmanagement.desktop
-%{_kde_datadir}/kde4/services/plasma-engine-networkmanagement.desktop
-%{_kde_datadir}/kde4/services/kcm_networkmanagement_tray.desktop
-%{_kde_datadir}/kde4/services/kded/networkmanagement.desktop
+%files -n plasma-applet-networkmanagement -f plasma_applet_networkmanagement.lang
 %{_kde_libdir}/kde4/plasma_applet_networkmanagement.so
 %{_kde_libdir}/kde4/plasma_engine_networkmanagement.so
 %{_kde_libdir}/kde4/kded_networkmanagement.so
+%{_kde_libdir}/kde4/solid_networkmanager09.so
 %{_kde_libdir}/kde4/kcm_networkmanagement_tray.so
+%{_kde_services}/solidbackends/solid_networkmanager09.desktop
+%{_kde_services}/plasma-applet-networkmanagement.desktop
+%{_kde_services}/plasma-engine-networkmanagement.desktop
+%{_kde_services}/kcm_networkmanagement_tray.desktop
+%{_kde_services}/kded/networkmanagement.desktop
+%{_kde_servicetypes}/solidnetworkmanagernm09.desktop
+%{_kde_appsdir}/desktoptheme/default/icons/network2.svgz
+
 
 #--------------------------------------------------------------------
 
@@ -125,6 +136,38 @@ libknservice library used by %{name}.
 %{_kde_libdir}/libknmservice.so.%{libservice_major}*
 
 #--------------------------------------------------------------------
+
+%define libsolidcontrolnm_major 4
+%define libsolidcontrolnm %mklibname solidcontrolnm %{libsolidcontrolnm_major}
+
+%package -n %{libsolidcontrolnm}
+Summary:	libsolidcontrol library for networkmanager 0.9
+Group:		System/Libraries
+
+%description -n %{libsolidcontrolnm}
+libsolidcontrol library for networkmanager 0.9
+
+%files -n %{libsolidcontrolnm}
+%{_kde_libdir}/libsolidcontrolnm09.so.%{libsolidcontrolnm_major}*
+
+#-------------------------------------------------------------------------
+
+%define libsolidcontrolnm_ifaces_major 4
+%define libsolidcontrolnm_ifaces %mklibname solidcontrolnmifaces %{libsolidcontrolnm_ifaces_major}
+
+%package -n %{libsolidcontrolnm_ifaces}
+Summary:	libsolidcontrol library for networkmanager 0.9
+Group:		System/Libraries
+
+%description -n %{libsolidcontrolnm_ifaces}
+libsolidcontrol library for networkmanager 0.9
+
+%files -n %{libsolidcontrolnm_ifaces}
+%{_kde_libdir}/libsolidcontrolnm09ifaces.so.%{libsolidcontrolnm_ifaces_major}*
+
+
+#-------------------------------------------------------------------------
+
 %define libknmui_major 4
 %define libknmui %mklibname knmui %{libknmui_major}
 
@@ -139,7 +182,8 @@ libknui library used by %{name}.
 %{_kde_libdir}/libknmui.so.%{libknmui_major}*
 
 #--------------------------------------------------------------------
-%define libsolidcontrolfuture %mklibname solidcontrolfuture
+%define libsolidcontrolfuture_major 4
+%define libsolidcontrolfuture %mklibname solidcontrolfuture %{libsolidcontrolfuture_major}
 
 %package -n %{libsolidcontrolfuture}
 Summary:        solidcontrolfuture library used by %{name}
@@ -149,7 +193,7 @@ Group:          System/Libraries
 libsolidcontrolfuture library used by %{name}.
 
 %files -n %{libsolidcontrolfuture}
-%{_kde_libdir}/libsolidcontrolfuture.so
+%{_kde_libdir}/libsolidcontrolfuture.so.%{libsolidcontrolfuture_major}*
 
 #--------------------------------------------------------------------
 %define libknm_nm %mklibname knm_nm
@@ -169,11 +213,12 @@ NetworkManager back-end for %{name}.
 %package -n %{develname}
 Summary:       Development files for %{name}                                             
 Group:         Development/KDE and Qt                                                    
-Requires:      %{libknmclient} = %{version}                         
-Requires:      %{libknminternals} = %{version}                      
-Requires:      %{libknmservice} = %{version}                        
-Requires:      %{libknmui} = %{version}                             
-Provides:      knetworkmanager-devel =  %{version}-%{release} 
+Requires:      %{libknmclient} = %{EVRD}                         
+Requires:      %{libknminternals} = %{EVRD}
+Requires:      %{libknmservice} = %{EVRD}
+Requires:      %{libknmui} = %{EVRD}                             
+Requires:	%{libsolidcontrolfuture} = %{EVRD}
+Provides:      knetworkmanager-devel = %{EVRD}
 
 %description -n %{develname}                                                             
 Development files for %{name}   
@@ -183,8 +228,14 @@ Development files for %{name}
 %{_kde_libdir}/libknminternals.so
 %{_kde_libdir}/libknmservice.so
 %{_kde_libdir}/libknmui.so
+%{_kde_libdir}/libsolidcontrolfuture.so
+%{_kde_includedir}/solid/controlnm09/
+%{_kde_libdir}/libsolidcontrolnm09.so
+%{_kde_libdir}/libsolidcontrolnm09ifaces.so
 
 #--------------------------------------------------------------------
+
+%if %{openvn}
 
 %package -n knetworkmanager-openvpn
 Summary:        OpenVPN support for knetworkmanager
@@ -198,6 +249,7 @@ Requires:       networkmanager-openvpn
 %{_kde_libdir}/kde4/networkmanagement_openvpnui.so
 %{_kde_datadir}/kde4/services/networkmanagement_openvpnui.desktop
 
+%endif
 #--------------------------------------------------------------------
 
 %if %{novellvpn}
@@ -251,6 +303,7 @@ Group:          Graphical desktop/KDE
 
 #--------------------------------------------------------------------
 
+%if %{vpnc}
 
 %package -n knetworkmanager-vpnc
 Summary:        Vpnc support for knetworkmanager
@@ -263,12 +316,27 @@ Requires:       networkmanager-vpnc
 %files -n knetworkmanager-vpnc
 %{_kde_libdir}/kde4/networkmanagement_vpncui.so
 %{_kde_datadir}/kde4/services/networkmanagement_vpncui.desktop
+%endif
+#-------------------------------------------------------------------
+%if %{openconnect}
+%package openconnect
+Summary: Openconnect support for %name
+Group: Graphical desktop/KDE
+Requires: openconnect
 
+%description openconnect
+Openconnect plugin for %name
+
+%files openconnect
+%_kde_libdir/kde4/networkmanagement_openconnectui.so
+%_kde_services/networkmanagement_openconnectui.desktop
+
+%endif
 #--------------------------------------------------------------------
 
 
 %prep
-%setup -q -n %{srcname}-%{version}
+%setup -q -n %{srcname} -a1
 %apply_patches
 
 %build
@@ -295,5 +363,23 @@ rm %{buildroot}%{_kde_libdir}/kde4/networkmanagement_strongswanui.so
 rm %{buildroot}%{_kde_datadir}/kde4/services/networkmanagement_strongswanui.desktop
 %endif
 
-%find_lang %{name} %{name} lib%{name} plasma_applet_networkmanagement
+%if ! %{openvn}
+rm %{buildroot}%{_kde_libdir}/kde4/networkmanagement_openvpnui.so
+rm %{buildroot}%{_kde_datadir}/kde4/services/networkmanagement_openvpnui.desktop
+%endif
 
+%if ! %{vpnc}
+rm %{buildroot}%{_kde_libdir}/kde4/networkmanagement_vpncui.so
+rm %{buildroot}%{_kde_datadir}/kde4/services/networkmanagement_vpncui.desktop
+%endif
+
+%find_lang %{name} lib%{name} %{name}.lang
+%find_lang plasma_applet_networkmanagement
+
+cat > README.install.urpmi << EOF
+The monolithic client is not built anymore by upstream.
+You need to use now the plasma applet.
+
+Regards,
+
+EOF
