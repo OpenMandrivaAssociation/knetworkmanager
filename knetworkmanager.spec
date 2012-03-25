@@ -1,5 +1,5 @@
-%define gitrev aa2e2a7f61234f9790d046cfd761e110bb2750a2
-%define datetime 20111130
+%define gitrev b30bd2167d9b1a7acb4372eb2fe94232643b1ab4
+%define datetime 20120325
 #define svnrev 
 %define srcname networkmanagement
 
@@ -13,15 +13,15 @@
 
 Name:           knetworkmanager
 Summary:        KDE NetworkManager
-Version:        0.9
-Release:        1.%{datetime}.2
+Version:        0.9.0
+Release:        1
 Epoch:		1
 Group:          Graphical desktop/KDE
 License:        (GPLv2 or GPLv3) and GPLv2+ and LGPLv2+ and LGPLv2 
 URL:            http://www.kde.org
 #Source get from git
 # git clone git://anongit.kde.org/networkmanagement 
-# git archive --format=tar --prefix=networkmanagement/ --remote=git://anongit.kde.org/networkmanagement v0.9.0_rc3 | xz -9 >  networkmanagement-20111022.tar.xz                                                                            
+# git archive --format=tar --prefix=networkmanagement/ --remote=git://anongit.kde.org/networkmanagement v0.9.0 | xz -9 > networkmanagement-20120325.tar.xz
 Source0:        %{srcname}-%{datetime}.tar.xz
 Source1:        %{srcname}-l10n.tar.xz
 Patch0:		networkmanagement-0.9-useversion.patch
@@ -56,7 +56,6 @@ Requires:	networkmanager
 Common files used by knetworkmanager and plasma-applet-networkmanagement.
 
 %files -n %{name}-common -f %{name}.lang
-%{_sysconfdir}/dbus-1/system.d/NetworkManager-kde4.conf
 %{_kde_libdir}/kde4/kcm_networkmanagement.so
 %{_kde_libdir}/kde4/libexec/networkmanagement_configshell
 %{_kde_datadir}/kde4/services/kcm_networkmanagement.desktop
