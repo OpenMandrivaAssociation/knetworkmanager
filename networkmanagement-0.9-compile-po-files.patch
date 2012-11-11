@@ -1,0 +1,12 @@
+Index: CMakeLists.txt
+===================================================================
+--- a/CMakeLists.txt
++++ b/CMakeLists.txt	2011-10-23 11:24:49.036219486 -0300
+@@ -54,6 +54,7 @@
+         add_subdirectory(settings)
+         add_subdirectory(vpnplugins)
+         add_subdirectory(kded)
++	add_subdirectory(po)
+ 
+         # This is unmaintained, do not use it.
+         #add_subdirectory(monolithic)
