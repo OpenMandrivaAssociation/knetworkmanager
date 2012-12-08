@@ -1,0 +1,79 @@
+diff -Nuar networkmanagement-0.9.0.2_old/applet/activatableitem.cpp networkmanagement-0.9.0.2/applet/activatableitem.cpp
+--- networkmanagement-0.9.0.2_old/applet/activatableitem.cpp	2012-05-07 20:16:57.000000000 +0400
++++ networkmanagement-0.9.0.2/applet/activatableitem.cpp	2012-06-26 16:27:34.000000000 +0400
+@@ -41,7 +41,7 @@
+ 
+ K_GLOBAL_STATIC_WITH_ARGS(KComponentData, s_networkManagementComponentData, ("networkmanagement", "networkmanagement", KComponentData::SkipMainComponentRegistration))
+ static const int m_iconSize = 48;
+-int rowHeight = qMax(30, QFontMetrics(KGlobalSettings::generalFont()).height()+10);
++int rowHeight = qMax(40, QFontMetrics(KGlobalSettings::generalFont()).height()+10);
+ int maxConnectionNameWidth = QFontMetrics(KGlobalSettings::generalFont()).width("12345678901234567890123");
+ 
+ ActivatableItem::ActivatableItem(RemoteActivatable *remote, QGraphicsItem * parent) : Plasma::IconWidget(parent),
+@@ -139,7 +139,7 @@
+     if (m_hasDefaultRoute) {
+         // TODO: this draws the pixmap behind the connection icon. This is the same
+         // problem described in a comment in networkmanager.cpp:NetworkManagerApplet::paintInterface.
+-        painter->drawPixmap(QRect(4,4,12,12), KIcon("network-defaultroute").pixmap(QSize(16,16)));
++        painter->drawPixmap(QRect(6,4,12,12), KIcon("network-defaultroute").pixmap(QSize(16,16)));
+     }
+ }
+ 
+diff -Nuar networkmanagement-0.9.0.2_old/applet/nmpopup.cpp networkmanagement-0.9.0.2/applet/nmpopup.cpp
+--- networkmanagement-0.9.0.2_old/applet/nmpopup.cpp	2012-05-07 20:16:57.000000000 +0400
++++ networkmanagement-0.9.0.2/applet/nmpopup.cpp	2012-06-26 11:38:38.000000000 +0400
+@@ -39,6 +39,7 @@
+ // Plasma
+ #include <Plasma/Label>
+ #include <Plasma/Separator>
++#include <Plasma/Theme>
+ 
+ // Solid::Control
+ #include <solid/control/networkmanager.h>
+@@ -120,6 +121,10 @@
+     QGraphicsGridLayout* checkboxLayout = new QGraphicsGridLayout(checkboxWidget);
+     // flight-mode checkbox
+     m_networkingCheckBox = new Plasma::CheckBox(m_leftWidget);
++    QColor textC =  Plasma::Theme::defaultTheme()->color(Plasma::Theme::TextColor);
++    QString css = QString("QCheckBox { color: %1; border: none; padding-left: 1px} "
++                          "QCheckBox::hover { border: 1px solid #b4c9db; padding-left: 0px}").arg(textC.name());
++    m_networkingCheckBox->setStyleSheet(css);
+     m_networkingCheckBox->setText(i18nc("CheckBox to enable or disable networking completely", "Enable networking"));
+     checkboxLayout->addItem(m_networkingCheckBox, 0, 0);
+     connect(m_networkingCheckBox, SIGNAL(toggled(bool)),
+@@ -131,6 +136,7 @@
+     m_wwanCheckBox = new Plasma::CheckBox(m_leftWidget);
+     m_wwanCheckBox->setText(i18nc("CheckBox to enable or disable wwan (mobile broadband) interface)", "Enable mobile broadband"));
+     m_wwanCheckBox->hide();
++    m_wwanCheckBox->setStyleSheet(css);
+     m_wwanCheckBox->nativeWidget()->setTristate(true);
+     checkboxLayout->addItem(m_wwanCheckBox, 0, 1);
+ 
+@@ -144,6 +150,7 @@
+     m_wifiCheckBox = new Plasma::CheckBox(m_leftWidget);
+     m_wifiCheckBox->setText(i18nc("CheckBox to enable or disable wireless interface (rfkill)", "Enable wireless"));
+     m_wifiCheckBox->hide();
++    m_wifiCheckBox->setStyleSheet(css);
+     checkboxLayout->addItem(m_wifiCheckBox, 1, 0);
+ 
+     connect(m_wifiCheckBox, SIGNAL(toggled(bool)), SLOT(wirelessEnabledToggled(bool)));
+diff -Nuar networkmanagement-0.9.0.2_old/applet/wirelessnetworkitem.cpp networkmanagement-0.9.0.2/applet/wirelessnetworkitem.cpp
+--- networkmanagement-0.9.0.2_old/applet/wirelessnetworkitem.cpp	2012-05-07 20:16:57.000000000 +0400
++++ networkmanagement-0.9.0.2/applet/wirelessnetworkitem.cpp	2012-06-26 16:56:08.000000000 +0400
+@@ -84,7 +84,7 @@
+     // First, third and fourth colunm are fixed width for the icons
+     m_layout->setColumnPreferredWidth(0, 150);
+     m_layout->setColumnFixedWidth(2, 60);
+-    m_layout->setColumnFixedWidth(3, rowHeight);
++    m_layout->setColumnFixedWidth(3, rowHeight-20);
+     m_layout->setColumnSpacing(2, spacing);
+ 
+     // icon on the left
+@@ -137,7 +137,6 @@
+     m_securityIcon->nativeWidget()->setPixmap(KIcon(m_wirelessStatus->securityIcon()).pixmap(22,22));
+     m_securityIcon->setToolTip(m_wirelessStatus->securityTooltip());
+     m_layout->addItem(m_securityIcon, 0, 3, 1, 1, Qt::AlignVCenter | Qt::AlignRight);
+-
+     connect(this, SIGNAL(clicked()), this, SLOT(emitClicked()));
+ 
+     // Forward clicks and presses between our widgets and this

@@ -1,5 +1,5 @@
-%define gitrev b30bd2167d9b1a7acb4372eb2fe94232643b1ab4
-%define datetime 20120325
+#define gitrev aa2e2a7f61234f9790d046cfd761e110bb2750a2
+#define datetime 20120122
 #define svnrev 
 %define srcname networkmanagement
 
@@ -9,25 +9,29 @@
 %define strongswan 0
 %define openvn 1
 %define vpnc 1
-%define openconnect 1
+%define openconnect 0
 
 Name:           knetworkmanager
 Summary:        KDE NetworkManager
-Version:        0.9.0
+Version:        0.9.0.5
 Release:        1
-Epoch:		1
+Epoch:		2
 Group:          Graphical desktop/KDE
 License:        (GPLv2 or GPLv3) and GPLv2+ and LGPLv2+ and LGPLv2 
 URL:            http://www.kde.org
+#http://lamarque-lvs.blogspot.ru/
 #Source get from git
 # git clone git://anongit.kde.org/networkmanagement 
-# git archive --format=tar --prefix=networkmanagement/ --remote=git://anongit.kde.org/networkmanagement v0.9.0 | xz -9 > networkmanagement-20120325.tar.xz
-Source0:        %{srcname}-%{datetime}.tar.xz
-Source1:        %{srcname}-l10n.tar.xz
+# git archive --format=tar --prefix=networkmanagement/ --remote=git://anongit.kde.org/networkmanagement v0.9.0_rc3 | xz -9 >  networkmanagement-20111022.tar.xz                                                                            
+Source0:        http://download.kde.org/unstable/networkmanagement/0.9.0.5/src/%{srcname}-%{version}.tar.bz2
+#Source1:	networkmanagement-l10n.tar.bz2
 Patch0:		networkmanagement-0.9-useversion.patch
 Patch1:		networkmanagement-0.9-compile-po-files.patch
-
+#Patch2:		networkmanagement-0.9.0.2-applet.desktop.patch
+#Patch3:		networkmanagement-0.9.0.2-kcm.desktop.patch
+Patch4:		networkmanagement-0.9.0.2-ui-fix.patch
 BuildRequires:  pkgconfig(libnm-util) >= 0.9
+BuildRequires:  pkgconfig(libnm-glib) >= 0.9
 BuildRequires:  mobile-broadband-provider-info
 BuildRequires:  kdebase4-workspace-devel
 %if %{openconnect}
@@ -58,8 +62,8 @@ Common files used by knetworkmanager and plasma-applet-networkmanagement.
 %files -n %{name}-common -f %{name}.lang
 %{_kde_libdir}/kde4/kcm_networkmanagement.so
 %{_kde_libdir}/kde4/libexec/networkmanagement_configshell
-%{_kde_datadir}/kde4/services/kcm_networkmanagement.desktop
-%{_kde_datadir}/kde4/servicetypes/networkmanagement_vpnuiplugin.desktop
+%{_kde_services}/kcm_networkmanagement.desktop
+%{_kde_servicetypes}/networkmanagement_vpnuiplugin.desktop
 %{_kde_iconsdir}/oxygen/*/*/*
 %{_kde_appsdir}/networkmanagement/
 
@@ -148,6 +152,7 @@ libsolidcontrol library for networkmanager 0.9
 
 %files -n %{libsolidcontrolnm}
 %{_kde_libdir}/libsolidcontrolnm09.so.%{libsolidcontrolnm_major}*
+%{_datadir}/locale/*/*/solidcontrolnm09*
 
 #-------------------------------------------------------------------------
 
@@ -335,7 +340,7 @@ Openconnect plugin for %name
 
 
 %prep
-%setup -q -n %{srcname} -a1
+%setup -q -n %{srcname}-%{version}
 %apply_patches
 
 %build
@@ -374,6 +379,7 @@ rm %{buildroot}%{_kde_datadir}/kde4/services/networkmanagement_vpncui.desktop
 
 %find_lang %{name} lib%{name} %{name}.lang
 %find_lang plasma_applet_networkmanagement
+%find_lang solidcontrolnm09
 
 cat > README.install.urpmi << EOF
 The monolithic client is not built anymore by upstream.
@@ -382,3 +388,113 @@ You need to use now the plasma applet.
 Regards,
 
 EOF
+
+
+%changelog
+* Sun May 29 2012 thesaint <thesaint> 2:0.9.0.2-3
+- network-applet: fixed network checkboxs' text color
+
+* Sun May 27 2012 akdengi <akdengi> 2:0.9.0.2-2
+- new version 0.9.0.2
+- update l10n source
+- fix source URL
+- add russian description to .desktop file
+
+* Thu Dec 01 2011 Per Øyvind Karlsen <peroyvind@mandriva.org> 1:0.9-1.20111130.2
++ Revision: 737053
+- bump to move to main
+
+* Thu Dec 01 2011 Per Øyvind Karlsen <peroyvind@mandriva.org> 1:0.9-1.20111130.1
++ Revision: 735870
+- update to latest and sync most of spec with mageia
+
+* Tue Jun 07 2011 Nicolas Lécureuil <nlecureuil@mandriva.com> 1:0.9-0.20110607.1
++ Revision: 683062
+- New snapshot
+  Remove merged patches
+  monolithic gui is no more
+
+* Wed May 04 2011 Oden Eriksson <oeriksson@mandriva.com> 1:0.9-0.20110314.2
++ Revision: 666032
+- mass rebuild
+
+* Tue Mar 15 2011 Andrey Borzenkov <arvidjaar@mandriva.org> 1:0.9-0.20110314.1
++ Revision: 644855
+- new GIT snapshot (11645bb)
+- P100: vpnc secrets were stored even when set to "ask aways"
+- P101: do not store plain text secrets when DontStore is requested
+
+* Fri Mar 11 2011 Andrey Borzenkov <arvidjaar@mandriva.org> 1:0.9-0.20110311.1
++ Revision: 643813
+- GIT e14fea: fixes wireless permanently disabled after rfkill
+
+* Fri Mar 04 2011 Andrey Borzenkov <arvidjaar@mandriva.org> 1:0.9-0.20110304.1
++ Revision: 641588
+- networkmanagement switched to GIT. Use date of latest commit in
+  release string for lack of anything better (suggested by Thomas
+  Backlund)
+- increase Epoch to ensure update from previous release scheme
+- latest GIT snapshot eaf856
+- P0: drop, intergrated upstream
+
+* Tue Feb 01 2011 Eugeni Dodonov <eugeni@mandriva.com> 0.9-0.r1201724.3
++ Revision: 634844
+- Networkmanager-pptp is among us now, rebuilding.
+
+* Fri Dec 31 2010 Funda Wang <fwang@mandriva.org> 0.9-0.r1201724.2mdv2011.0
++ Revision: 626778
+- fix requires
+
+* Sun Nov 28 2010 Andrey Borzenkov <arvidjaar@mandriva.org> 0.9-0.r1201724.1mdv2011.0
++ Revision: 602509
+- new snapshot - fix system connection display
+
+* Sat Nov 20 2010 Andrey Borzenkov <arvidjaar@mandriva.org> 0.9-0.r1198724.1mdv2011.0
++ Revision: 599185
+- new snapshot - yet another attempt to fix crash on NM restart
+- allow build on relases before 2011.0
+
+  + Eugeni Dodonov <eugeni@mandriva.com>
+    - Fix file conflict on 2010.1.
+
+* Thu Nov 04 2010 Andrey Borzenkov <arvidjaar@mandriva.org> 0.9-0.r1192577.2mdv2011.0
++ Revision: 593205
+- pptp does not belong to -common and does not exist in Mandriva currently
+
+* Thu Nov 04 2010 Andrey Borzenkov <arvidjaar@mandriva.org> 0.9-0.r1192577.1mdv2011.0
++ Revision: 593188
+- update to new snapshot in attempt to fix crash on NM restart
+  package translations too
+
+* Thu Jul 15 2010 Andrey Borzenkov <arvidjaar@mandriva.org> 0.9-0.r1148396.1mdv2011.0
++ Revision: 553701
+- plasma applet really works (and is preferred) now so remove requires
+  on monolithic knetworkmanager from VPN plugins
+- patch0: support vpnc always_ask secrets (KDE #244416)
+- new snapshot
+
+* Sat Feb 06 2010 Nicolas Lécureuil <nlecureuil@mandriva.com> 0.9-0.r1084746.1mdv2010.1
++ Revision: 501439
+- Change to fit kde specs layout
+
+  + Frederik Himpe <fhimpe@mandriva.org>
+    - Use version 0.9, as indicated insource code (thanks Anssi)
+    - No need for versioned conflicts
+    - Use versioned conflicts
+    - Use Fedora's license tag
+    - Make knetworkmanager and plasma-applet-networkmanagement conflict
+      because they cannot be run together. Put common files in
+      knetworkmanager-common.
+    - Add Requires: kde-solid-networkmanager
+    - Put shared libraries which don't have major also in separate packages
+    - Split libraries in separate packages
+    - Fix groups and requires
+    - Fix name of plasma applet package
+    - Don't package novellvpn stuff because we don't have
+      networkmanager-novellvpn
+    - Fix installation of dbus system policy file
+    - Split package
+    - Many other SPEC file fixes
+    - import knetworkmanager
+
+
