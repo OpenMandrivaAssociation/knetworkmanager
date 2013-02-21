@@ -14,7 +14,7 @@
 Name:           knetworkmanager
 Summary:        KDE NetworkManager
 Version:        0.9.0.5
-Release:        1
+Release:        2
 Epoch:		2
 Group:          Graphical desktop/KDE
 License:        (GPLv2 or GPLv3) and GPLv2+ and LGPLv2+ and LGPLv2 
@@ -24,6 +24,7 @@ URL:            http://www.kde.org
 # git clone git://anongit.kde.org/networkmanagement 
 # git archive --format=tar --prefix=networkmanagement/ --remote=git://anongit.kde.org/networkmanagement v0.9.0_rc3 | xz -9 >  networkmanagement-20111022.tar.xz                                                                            
 Source0:        http://download.kde.org/unstable/networkmanagement/0.9.0.5/src/%{srcname}-%{version}.tar.bz2
+Source100:	knetworkmanager.rpmlintrc
 #Source1:	networkmanagement-l10n.tar.bz2
 Patch0:		networkmanagement-0.9-useversion.patch
 Patch1:		networkmanagement-0.9-compile-po-files.patch
