@@ -3,7 +3,7 @@
 #define svnrev 
 %define srcname networkmanagement
 
-%define develname %mklibname -d knetworkmanager
+%define devname %mklibname -d knetworkmanager
 %define novellvpn 0
 %define pptp 1
 %define strongswan 0
@@ -11,30 +11,31 @@
 %define vpnc 1
 %define openconnect 0
 
-Name:           knetworkmanager
-Summary:        KDE NetworkManager
-Version:        0.9.0.5
-Release:        2
+Summary:	KDE NetworkManager
+Name:		knetworkmanager
 Epoch:		2
-Group:          Graphical desktop/KDE
-License:        (GPLv2 or GPLv3) and GPLv2+ and LGPLv2+ and LGPLv2 
-URL:            http://www.kde.org
+Version:	0.9.0.5
+Release:	2
+Group:		Graphical desktop/KDE
+License:	(GPLv2 or GPLv3) and GPLv2+ and LGPLv2+ and LGPLv2 
+Url:		http://www.kde.org
 #http://lamarque-lvs.blogspot.ru/
 #Source get from git
 # git clone git://anongit.kde.org/networkmanagement 
-# git archive --format=tar --prefix=networkmanagement/ --remote=git://anongit.kde.org/networkmanagement v0.9.0_rc3 | xz -9 >  networkmanagement-20111022.tar.xz                                                                            
-Source0:        http://download.kde.org/unstable/networkmanagement/0.9.0.5/src/%{srcname}-%{version}.tar.bz2
+# git archive --format=tar --prefix=networkmanagement/ --remote=git://anongit.kde.org/networkmanagement v0.9.0_rc3 | xz -9 >  networkmanagement-20111022.tar.xz
+Source0:	http://download.kde.org/unstable/networkmanagement/0.9.0.5/src/%{srcname}-%{version}.tar.bz2
 Source100:	knetworkmanager.rpmlintrc
 #Source1:	networkmanagement-l10n.tar.bz2
 Patch0:		networkmanagement-0.9-useversion.patch
 Patch1:		networkmanagement-0.9-compile-po-files.patch
-#Patch2:		networkmanagement-0.9.0.2-applet.desktop.patch
-#Patch3:		networkmanagement-0.9.0.2-kcm.desktop.patch
+#Patch2:	networkmanagement-0.9.0.2-applet.desktop.patch
+#Patch3:	networkmanagement-0.9.0.2-kcm.desktop.patch
 Patch4:		networkmanagement-0.9.0.2-ui-fix.patch
-BuildRequires:  pkgconfig(libnm-util) >= 0.9
-BuildRequires:  pkgconfig(libnm-glib) >= 0.9
-BuildRequires:  mobile-broadband-provider-info
-BuildRequires:  kdebase4-workspace-devel
+
+BuildRequires:	mobile-broadband-provider-info
+BuildRequires:	kdebase4-workspace-devel
+BuildRequires:	pkgconfig(libnm-util) >= 0.9
+BuildRequires:	pkgconfig(libnm-glib) >= 0.9
 %if %{openconnect}
 BuildRequires:	pkgconfig(openconnect) >= 3.10
 %endif
@@ -93,7 +94,6 @@ connections on systems that use the NetworkManager service.
 %{_kde_servicetypes}/solidnetworkmanagernm09.desktop
 %{_kde_appsdir}/desktoptheme/default/icons/network2.svgz
 
-
 #--------------------------------------------------------------------
 
 %define knmclient_major 4
@@ -115,8 +115,8 @@ libknclient library used by %{name}.
 %define libknminternals %mklibname knminternals %{libkinternals_major}
 
 %package -n %{libknminternals}
-Summary:        libkninternals library used by %{name}
-Group:          System/Libraries
+Summary:	libkninternals library used by %{name}
+Group:		System/Libraries
 
 %description -n %{libknminternals}
 libkninternals library used by %{name}
@@ -130,8 +130,8 @@ libkninternals library used by %{name}
 %define libknmservice %mklibname knmservice %{libservice_major}
 
 %package -n %{libknmservice}
-Summary:        libknservice library used by %{name}
-Group:          System/Libraries
+Summary:	libknservice library used by %{name}
+Group:		System/Libraries
 
 %description -n %{libknmservice}
 libknservice library used by %{name}.
@@ -170,15 +170,14 @@ libsolidcontrol library for networkmanager 0.9
 %files -n %{libsolidcontrolnm_ifaces}
 %{_kde_libdir}/libsolidcontrolnm09ifaces.so.%{libsolidcontrolnm_ifaces_major}*
 
-
 #-------------------------------------------------------------------------
 
 %define libknmui_major 4
 %define libknmui %mklibname knmui %{libknmui_major}
 
 %package -n %{libknmui}
-Summary:        libknui library used by %{name}
-Group:          System/Libraries
+Summary:	libknui library used by %{name}
+Group:		System/Libraries
 
 %description -n %{libknmui}
 libknui library used by %{name}.
@@ -191,8 +190,8 @@ libknui library used by %{name}.
 %define libsolidcontrolfuture %mklibname solidcontrolfuture %{libsolidcontrolfuture_major}
 
 %package -n %{libsolidcontrolfuture}
-Summary:        solidcontrolfuture library used by %{name}
-Group:          System/Libraries
+Summary:	solidcontrolfuture library used by %{name}
+Group:		System/Libraries
 
 %description -n %{libsolidcontrolfuture}
 libsolidcontrolfuture library used by %{name}.
@@ -215,20 +214,20 @@ NetworkManager back-end for %{name}.
 
 #--------------------------------------------------------------------
 
-%package -n %{develname}
-Summary:       Development files for %{name}                                             
-Group:         Development/KDE and Qt                                                    
-Requires:      %{libknmclient} = %{EVRD}                         
-Requires:      %{libknminternals} = %{EVRD}
-Requires:      %{libknmservice} = %{EVRD}
-Requires:      %{libknmui} = %{EVRD}                             
+%package -n %{devname}
+Summary:	Development files for %{name}                                             
+Group:		Development/KDE and Qt                                                    
+Requires:	%{libknmclient} = %{EVRD}                         
+Requires:	%{libknminternals} = %{EVRD}
+Requires:	%{libknmservice} = %{EVRD}
+Requires:	%{libknmui} = %{EVRD}                             
 Requires:	%{libsolidcontrolfuture} = %{EVRD}
-Provides:      knetworkmanager-devel = %{EVRD}
+Provides:	knetworkmanager-devel = %{EVRD}
 
-%description -n %{develname}                                                             
+%description -n %{devname}                                                             
 Development files for %{name}   
 
-%files -n %{develname}
+%files -n %{devname}
 %{_kde_libdir}/libknmclient.so
 %{_kde_libdir}/libknminternals.so
 %{_kde_libdir}/libknmservice.so
@@ -243,9 +242,9 @@ Development files for %{name}
 %if %{openvn}
 
 %package -n knetworkmanager-openvpn
-Summary:        OpenVPN support for knetworkmanager
-Group:          Graphical desktop/KDE 
-Requires:       networkmanager-openvpn
+Summary:	OpenVPN support for knetworkmanager
+Group:		Graphical desktop/KDE 
+Requires:	networkmanager-openvpn
 
 %description -n knetworkmanager-openvpn
 %{summary}.
@@ -260,8 +259,8 @@ Requires:       networkmanager-openvpn
 %if %{novellvpn}
 
 %package -n knetworkmanager-novellvpn
-Summary:        Vpnc support for knetworkmanager
-Group:          Graphical desktop/KDE
+Summary:	Vpnc support for knetworkmanager
+Group:		Graphical desktop/KDE
 
 %description -n knetworkmanager-novellvpn
 %{summary}.
@@ -277,9 +276,9 @@ Group:          Graphical desktop/KDE
 %if %{pptp}
 
 %package -n knetworkmanager-pptp
-Summary:        Pptp support for knetworkmanager
-Group:          Graphical desktop/KDE
-Requires:       networkmanager-pptp 
+Summary:	Pptp support for knetworkmanager
+Group:		Graphical desktop/KDE
+Requires:	networkmanager-pptp 
 
 %description -n knetworkmanager-pptp
 %{summary}.
@@ -295,8 +294,8 @@ Requires:       networkmanager-pptp
 %if %{strongswan}
 
 %package -n knetworkmanager-strongswan
-Summary:        strongSwan support for knetworkmanager
-Group:          Graphical desktop/KDE 
+Summary:	strongSwan support for knetworkmanager
+Group:		Graphical desktop/KDE 
 
 %description -n knetworkmanager-strongswan
 %{summary}.
@@ -311,9 +310,9 @@ Group:          Graphical desktop/KDE
 %if %{vpnc}
 
 %package -n knetworkmanager-vpnc
-Summary:        Vpnc support for knetworkmanager
-Group:          Graphical desktop/KDE 
-Requires:       networkmanager-vpnc
+Summary:	Vpnc support for knetworkmanager
+Group:		Graphical desktop/KDE 
+Requires:	networkmanager-vpnc
 
 %description -n knetworkmanager-vpnc
 %{summary}.
@@ -325,9 +324,9 @@ Requires:       networkmanager-vpnc
 #-------------------------------------------------------------------
 %if %{openconnect}
 %package openconnect
-Summary: Openconnect support for %name
-Group: Graphical desktop/KDE
-Requires: openconnect
+Summary:	Openconnect support for %name
+Group:		Graphical desktop/KDE
+Requires:	openconnect
 
 %description openconnect
 Openconnect plugin for %name
@@ -339,9 +338,8 @@ Openconnect plugin for %name
 %endif
 #--------------------------------------------------------------------
 
-
 %prep
-%setup -q -n %{srcname}-%{version}
+%setup -qn %{srcname}-%{version}
 %apply_patches
 
 %build
@@ -389,113 +387,4 @@ You need to use now the plasma applet.
 Regards,
 
 EOF
-
-
-%changelog
-* Sun May 29 2012 thesaint <thesaint> 2:0.9.0.2-3
-- network-applet: fixed network checkboxs' text color
-
-* Sun May 27 2012 akdengi <akdengi> 2:0.9.0.2-2
-- new version 0.9.0.2
-- update l10n source
-- fix source URL
-- add russian description to .desktop file
-
-* Thu Dec 01 2011 Per Øyvind Karlsen <peroyvind@mandriva.org> 1:0.9-1.20111130.2
-+ Revision: 737053
-- bump to move to main
-
-* Thu Dec 01 2011 Per Øyvind Karlsen <peroyvind@mandriva.org> 1:0.9-1.20111130.1
-+ Revision: 735870
-- update to latest and sync most of spec with mageia
-
-* Tue Jun 07 2011 Nicolas Lécureuil <nlecureuil@mandriva.com> 1:0.9-0.20110607.1
-+ Revision: 683062
-- New snapshot
-  Remove merged patches
-  monolithic gui is no more
-
-* Wed May 04 2011 Oden Eriksson <oeriksson@mandriva.com> 1:0.9-0.20110314.2
-+ Revision: 666032
-- mass rebuild
-
-* Tue Mar 15 2011 Andrey Borzenkov <arvidjaar@mandriva.org> 1:0.9-0.20110314.1
-+ Revision: 644855
-- new GIT snapshot (11645bb)
-- P100: vpnc secrets were stored even when set to "ask aways"
-- P101: do not store plain text secrets when DontStore is requested
-
-* Fri Mar 11 2011 Andrey Borzenkov <arvidjaar@mandriva.org> 1:0.9-0.20110311.1
-+ Revision: 643813
-- GIT e14fea: fixes wireless permanently disabled after rfkill
-
-* Fri Mar 04 2011 Andrey Borzenkov <arvidjaar@mandriva.org> 1:0.9-0.20110304.1
-+ Revision: 641588
-- networkmanagement switched to GIT. Use date of latest commit in
-  release string for lack of anything better (suggested by Thomas
-  Backlund)
-- increase Epoch to ensure update from previous release scheme
-- latest GIT snapshot eaf856
-- P0: drop, intergrated upstream
-
-* Tue Feb 01 2011 Eugeni Dodonov <eugeni@mandriva.com> 0.9-0.r1201724.3
-+ Revision: 634844
-- Networkmanager-pptp is among us now, rebuilding.
-
-* Fri Dec 31 2010 Funda Wang <fwang@mandriva.org> 0.9-0.r1201724.2mdv2011.0
-+ Revision: 626778
-- fix requires
-
-* Sun Nov 28 2010 Andrey Borzenkov <arvidjaar@mandriva.org> 0.9-0.r1201724.1mdv2011.0
-+ Revision: 602509
-- new snapshot - fix system connection display
-
-* Sat Nov 20 2010 Andrey Borzenkov <arvidjaar@mandriva.org> 0.9-0.r1198724.1mdv2011.0
-+ Revision: 599185
-- new snapshot - yet another attempt to fix crash on NM restart
-- allow build on relases before 2011.0
-
-  + Eugeni Dodonov <eugeni@mandriva.com>
-    - Fix file conflict on 2010.1.
-
-* Thu Nov 04 2010 Andrey Borzenkov <arvidjaar@mandriva.org> 0.9-0.r1192577.2mdv2011.0
-+ Revision: 593205
-- pptp does not belong to -common and does not exist in Mandriva currently
-
-* Thu Nov 04 2010 Andrey Borzenkov <arvidjaar@mandriva.org> 0.9-0.r1192577.1mdv2011.0
-+ Revision: 593188
-- update to new snapshot in attempt to fix crash on NM restart
-  package translations too
-
-* Thu Jul 15 2010 Andrey Borzenkov <arvidjaar@mandriva.org> 0.9-0.r1148396.1mdv2011.0
-+ Revision: 553701
-- plasma applet really works (and is preferred) now so remove requires
-  on monolithic knetworkmanager from VPN plugins
-- patch0: support vpnc always_ask secrets (KDE #244416)
-- new snapshot
-
-* Sat Feb 06 2010 Nicolas Lécureuil <nlecureuil@mandriva.com> 0.9-0.r1084746.1mdv2010.1
-+ Revision: 501439
-- Change to fit kde specs layout
-
-  + Frederik Himpe <fhimpe@mandriva.org>
-    - Use version 0.9, as indicated insource code (thanks Anssi)
-    - No need for versioned conflicts
-    - Use versioned conflicts
-    - Use Fedora's license tag
-    - Make knetworkmanager and plasma-applet-networkmanagement conflict
-      because they cannot be run together. Put common files in
-      knetworkmanager-common.
-    - Add Requires: kde-solid-networkmanager
-    - Put shared libraries which don't have major also in separate packages
-    - Split libraries in separate packages
-    - Fix groups and requires
-    - Fix name of plasma applet package
-    - Don't package novellvpn stuff because we don't have
-      networkmanager-novellvpn
-    - Fix installation of dbus system policy file
-    - Split package
-    - Many other SPEC file fixes
-    - import knetworkmanager
-
 
