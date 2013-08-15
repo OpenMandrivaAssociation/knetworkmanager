@@ -1,16 +1,16 @@
 Index: solidcontrolfuture/CMakeLists.txt
 ===================================================================
 --- a/solidcontrolfuture/CMakeLists.txt
-+++ b/solidcontrolfuture/CMakeLists.txt	2011-06-14 19:01:51.089092551 -0300
-@@ -18,7 +18,10 @@
- kde4_add_library(solidcontrolfuture SHARED ${solidcontrolfuture_LIB_SRCS})
++++ b/olidcontrolfuture/CMakeLists.txt	2013-06-20 14:09:01.344171606 -0300
+@@ -19,6 +19,11 @@
  
- target_link_libraries(solidcontrolfuture ${KDE4_KDECORE_LIBS} ${KDE4_SOLID_LIBS} ${QT_QTNETWORK_LIBRARY} solidcontrol solidcontrolnm09)
--
+ target_link_libraries(solidcontrolfuture ${KDE4_KDECORE_LIBS} ${KDE4_SOLID_LIBS} ${QT_QTNETWORK_LIBRARY} solidcontrolnm09)
+ 
 +set_target_properties(solidcontrolfuture PROPERTIES
-+	VERSION ${GENERIC_LIB_VERSION}
-+	SOVERSION ${GENERIC_LIB_SOVERSION}
-+	)
++       VERSION ${GENERIC_LIB_VERSION}
++       SOVERSION ${GENERIC_LIB_SOVERSION}
++       )
++
  install(TARGETS solidcontrolfuture EXPORT kdeworkspaceLibraryTargets ${INSTALL_TARGETS_DEFAULT_ARGS} )
  
  #install( FILES wirelessnetwork.h
