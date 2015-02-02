@@ -7,6 +7,7 @@
 %define novellvpn 0
 %define pptp 1
 %define strongswan 0
+%define openswan 0
 %define openvn 1
 %define vpnc 1
 %define openconnect 0
@@ -14,8 +15,8 @@
 Summary:	KDE NetworkManager
 Name:		knetworkmanager
 Epoch:		2
-Version:	0.9.0.9
-Release:	8
+Version:	0.9.0.11
+Release:	1
 License:	(GPLv2 or GPLv3) and GPLv2+ and LGPLv2+ and LGPLv2 
 Group:		Graphical desktop/KDE
 Url:		http://www.kde.org
@@ -23,7 +24,7 @@ Url:		http://www.kde.org
 #Source get from git
 # git clone git://anongit.kde.org/networkmanagement 
 # git archive --format=tar --prefix=networkmanagement/ --remote=git://anongit.kde.org/networkmanagement v0.9.0_rc3 | xz -9 >  networkmanagement-20111022.tar.xz
-Source0:	http://download.kde.org/unstable/networkmanagement/0.9.0.5/src/%{srcname}-%{version}.tar.bz2
+Source0:	http://download.kde.org/unstable/networkmanagement/%{version}/src/%{srcname}-%{version}.tar.xz
 Source100:	knetworkmanager.rpmlintrc
 Patch0:		networkmanagement-0.9-useversion.patch
 Patch1:		networkmanagement-0.9-compile-po-files.patch
@@ -302,6 +303,21 @@ Group:		Graphical desktop/KDE
 %{_kde_libdir}/kde4/networkmanagement_strongswanui.so
 %{_kde_datadir}/kde4/services/networkmanagement_strongswanui.desktop
 %endif
+#--------------------------------------------------------------------
+
+%if %{openswan}
+%package -n knetworkmanager-openswan
+Summary:	strongSwan support for knetworkmanager
+Group:		Graphical desktop/KDE
+
+%description -n knetworkmanager-openswan
+%{summary}.
+
+%files -n knetworkmanager-openswan
+%{_kde_libdir}/kde4/networkmanagement_openswan.so
+%{_kde_datadir}/kde4/services/networkmanagement_openswan.desktop
+%endif
+
 
 #--------------------------------------------------------------------
 
@@ -363,6 +379,11 @@ rm %{buildroot}%{_kde_datadir}/kde4/services/networkmanagement_pptpui.desktop
 %if ! %{strongswan}
 rm %{buildroot}%{_kde_libdir}/kde4/networkmanagement_strongswanui.so
 rm %{buildroot}%{_kde_datadir}/kde4/services/networkmanagement_strongswanui.desktop
+%endif
+
+%if ! %{openswan}
+rm %{buildroot}%{_kde_libdir}/kde4/networkmanagement_openswanui.so
+rm %{buildroot}%{_kde_datadir}/kde4/services/networkmanagement_openswanui.desktop
 %endif
 
 %if ! %{openvn}
