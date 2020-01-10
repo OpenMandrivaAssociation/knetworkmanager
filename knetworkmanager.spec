@@ -355,7 +355,7 @@ Openconnect plugin for %{name}
 
 %prep
 %setup -qn %{srcname}-%{version}
-%apply_patches
+%autopatch -p1
 
 %build
 %cmake_kde4 \
