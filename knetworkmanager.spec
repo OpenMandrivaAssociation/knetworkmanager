@@ -19,7 +19,7 @@ Version:	0.9.0.11
 Release:	1
 License:	(GPLv2 or GPLv3) and GPLv2+ and LGPLv2+ and LGPLv2 
 Group:		Graphical desktop/KDE
-Url:		http://www.kde.org
+Url:		https://www.kde.org
 #http://lamarque-lvs.blogspot.ru/
 #Source get from git
 # git clone git://anongit.kde.org/networkmanagement 
